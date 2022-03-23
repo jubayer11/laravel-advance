@@ -182,8 +182,22 @@ use Illuminate\Support\Str;
 
 //end macro example
 
-
+//pipeline start
 Route::get('/posts',[\App\Http\Controllers\PostController::class,'index']);
+//pipeline end
+
+
+//Repository start
+
+Route::get('/repository/index',[\App\Http\Controllers\todoListController::class,'repositoryIndex']);
+
+Route::get('/repository/show/{id}',[\App\Http\Controllers\todoListController::class,'repositoryShow']);
+
+Route::get('/repository/show/{id}/update',[\App\Http\Controllers\todoListController::class,'repositoryUpdate']);
+Route::get('/repository/delete/{id}',[\App\Http\Controllers\todoListController::class,'repositoryDelete']);
+
+
+//repository end
 
 
 Route::get('/postcards', function () {

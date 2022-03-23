@@ -17,6 +17,7 @@ class CreateTodoListsTable extends Migration
             $table->id();
             $table->string('name');
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+
             $table->string('category');
             $table->timestamps();
         });

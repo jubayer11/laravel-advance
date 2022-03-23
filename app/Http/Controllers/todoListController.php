@@ -4,16 +4,28 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\todoListResource;
 use App\Models\TodoList;
+use App\Repositories\TodoListRepository;
+use App\Repositories\TodoListRepositoryInterface;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class todoListController extends Controller
 {
     /**
+     * @var TodoListRepository
+     */
+    private $todolistRepository;
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+    public function __construct(TodoListRepositoryInterface $todoListRepository)
+    {
+        $this->todolistRepository = $todoListRepository;
+    }
+
     public function index()
     {
         //
@@ -108,4 +120,42 @@ class todoListController extends Controller
         $listId->delete();
         return response('', Response::HTTP_NO_CONTENT);
     }
+
+
+    public function repositoryIndex()
+    {
+
+        $todolist = $this->todolistRepository->all();
+
+
+        return $todolist;
+    }
+
+    public function repositoryShow($id)
+    {
+
+        $todolist = $this->todolistRepository->findById($id);
+
+
+        return $todolist;
+    }
+
+    public function repositoryUpdate($id)
+    {
+        $this->todolistRepository->update($id);
+        return redirect('/repository/show/' . $id);
+    }
+
+
+    public function repositoryDelete($id)
+    {
+        $this->todolistRepository->delete($id);
+        return redirect('/repository/index');
+    }
+
+    //the benefit of this if we have another controller which needs this we can simply call it like this.
+
+
+
+
 }

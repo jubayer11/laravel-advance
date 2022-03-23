@@ -29,4 +29,16 @@ class TodoList extends Model
     {
         return $this->belongsTo(User::class,'user_id','id');
     }
+
+
+    public function format()
+    {
+        return
+            [
+                'todoListId' => $this->id,
+                'name' => $this->name,
+                'created_by' => $this->todoLists->email,
+                'updated_at' => $this->updated_at->diffForHumans(),
+            ];
+    }
 }
