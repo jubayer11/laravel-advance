@@ -35,4 +35,11 @@ class PostController extends Controller
 
         return view('posts.index', compact('posts'));
     }
+
+    public function softDeleteIndex()
+    {
+        $posts = Post::all();
+        return $posts;
+    }
+
 }

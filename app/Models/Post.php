@@ -7,11 +7,12 @@ use App\QueryFielters\MaxCount;
 use App\QueryFielters\Sort;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Pipeline\Pipeline;
 
 class Post extends Model
 {
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
 
     public static function allPosts()

@@ -43,4 +43,4 @@ Route::post('/service/callback',[SeriviceController::class,'callback'])->name('s
 Route::post('/service/{service}',[SeriviceController::class,'store'])->name('service.store');
 
 Route::post('/register', RegistrationController::class)->name('user.register');
-Route::post('/login', \App\Http\Controllers\Auth\LoginController::class)->name('user.login');
+Route::post('/login', \App\Http\Controllers\Auth\LoginUserController::class)->name('user.login');

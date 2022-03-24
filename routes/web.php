@@ -3,7 +3,9 @@
 use App\Http\Controllers\SeriviceController;
 use App\Services\Postcard;
 use App\Services\PostCardSendingService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Contracts\Mail\Mailer;
@@ -183,21 +185,50 @@ use Illuminate\Support\Str;
 //end macro example
 
 //pipeline start
-Route::get('/posts',[\App\Http\Controllers\PostController::class,'index']);
+Route::get('/posts', [\App\Http\Controllers\PostController::class, 'index']);
 //pipeline end
 
 
 //Repository start
 
-Route::get('/repository/index',[\App\Http\Controllers\todoListController::class,'repositoryIndex']);
+Route::get('/repository/index', [\App\Http\Controllers\todoListController::class, 'repositoryIndex']);
 
-Route::get('/repository/show/{id}',[\App\Http\Controllers\todoListController::class,'repositoryShow']);
+Route::get('/repository/show/{id}', [\App\Http\Controllers\todoListController::class, 'repositoryShow']);
 
-Route::get('/repository/show/{id}/update',[\App\Http\Controllers\todoListController::class,'repositoryUpdate']);
-Route::get('/repository/delete/{id}',[\App\Http\Controllers\todoListController::class,'repositoryDelete']);
+Route::get('/repository/show/{id}/update', [\App\Http\Controllers\todoListController::class, 'repositoryUpdate']);
+Route::get('/repository/delete/{id}', [\App\Http\Controllers\todoListController::class, 'repositoryDelete']);
 
 
 //repository end
+
+//soft delete start
+
+Route::get('softDelete/posts/index', [\App\Http\Controllers\PostController::class, 'softDeleteIndex']);
+
+//soft delete end
+
+
+//gate & and policy start
+
+Route::get('/subs', function (){
+
+    if (Gate::allows('mature-only',Auth::user()))
+    {
+        return view('subs');
+    }
+    return 'you are under age';
+});
+
+Route::get('customers', [\App\Http\Controllers\CustomerController::class,'index'])->name('customers.index');
+Route::get('customers/create', 'CustomerController@create')->name('customers.create');
+Route::post('customers', 'CustomerController@store')->name('customers.store');
+Route::get('customers/{customer}', 'CustomerController@show')->name('customer.show')->middleware('can:view,customer');
+Route::get('customers/{customer}/edit', 'CustomerController@edit')->name('customers.edit');
+Route::patch('customers/{customer}', 'CustomerController@update')->name('customers.update');
+Route::delete('customers/{customer}', 'CustomerController@destroy')->name('customers.destroy');
+
+
+//gate & and policy end
 
 
 Route::get('/postcards', function () {
@@ -275,3 +306,9 @@ Route::get('upload', function () {
 
 //service container
 Route::get('/pay', [\App\Http\Controllers\PayOrderController::class, 'store']);
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
