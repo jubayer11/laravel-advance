@@ -7,6 +7,7 @@ use App\QueryFielters\Active;
 use App\QueryFielters\Sort;
 use Illuminate\Http\Request;
 use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\App;
 
 class PostController extends Controller
 {
@@ -40,6 +41,12 @@ class PostController extends Controller
     {
         $posts = Post::all();
         return $posts;
+    }
+
+    public function localization($lang=null)
+    {
+        App::setLocale($lang);
+        return view('localization');
     }
 
 }

@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\SeriviceController;
+use App\Jobs\sendEmailJob;
+use App\Mail\sendEmailMailable;
 use App\Services\Postcard;
 use App\Services\PostCardSendingService;
 use Illuminate\Support\Facades\Auth;
@@ -229,6 +232,35 @@ Route::delete('customers/{customer}', 'CustomerController@destroy')->name('custo
 
 
 //gate & and policy end
+
+
+
+//localization start
+
+Route::get('/localization/{lang?}',[PostController::class,'localization']);
+
+
+//localization end
+
+
+
+//queue start
+
+Route::get('sendEmail',function ()
+{
+//    \Illuminate\Support\Facades\Mail::to('ahmedjubayer54@gmail.com')->send( new SendEmailMailable());
+
+    //dispatch(new sendEmailJob());
+
+    sendEmailJob::dispatch()
+        ->delay(now()->addSecond(5));
+    return "email is send properly";
+});
+
+
+
+
+
 
 
 Route::get('/postcards', function () {
