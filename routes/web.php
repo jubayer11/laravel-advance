@@ -177,6 +177,20 @@ use Illuminate\Support\Str;
 
 //start faceds example coder xample
 
+Route::get('/postcards', function () {
+
+    $postCardService = new PostCardSendingService('us', 4, 6);
+
+    $postCardService->hello('hello everyone', 'ahmedjubayer54@gmail.com');
+});
+
+
+Route::get('/facades', function () {
+    Postcard::hello('123', 'sbc@gmail.com');
+});
+//end facades exmple
+
+
 //start macro example
 
 //dd(Str::partNumber('dfasfdsafsadf'));
@@ -258,22 +272,28 @@ Route::get('sendEmail',function ()
 });
 
 
+//queue end
 
 
+//event start
 
+Route::get('event',function ()
+{
 
-
-Route::get('/postcards', function () {
-
-    $postCardService = new PostCardSendingService('us', 4, 6);
-
-    $postCardService->hello('hello everyone', 'ahmedjubayer54@gmail.com');
+    event(new \App\Events\TaskEvent('hey everyone'));
 });
 
 
-Route::get('/facades', function () {
-    Postcard::hello('123', 'sbc@gmail.com');
-});
+//event end
+//broadcast start
+Route::get('/listen',function ()
+{
+    return view('listenBroadcast');
+}
+);
+
+//broadcast end
+
 
 
 Route::get('/about', function () {
@@ -338,7 +358,7 @@ Route::get('upload', function () {
 
 //service container
 Route::get('/pay', [\App\Http\Controllers\PayOrderController::class, 'store']);
-
+//end service container
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

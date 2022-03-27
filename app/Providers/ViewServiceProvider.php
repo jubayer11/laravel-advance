@@ -35,7 +35,7 @@ class ViewServiceProvider extends ServiceProvider
 //           $view->with('beverages',Bevarage::orderBy('id')->get());
 //        });
 //
-//        //option 3
+        //option 3
 //        View::composer(['beverage.*',BeverageComposer::class]);
 
     }

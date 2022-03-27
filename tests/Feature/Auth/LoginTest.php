@@ -32,10 +32,7 @@ class LoginTest extends TestCase
 
     public function test_if_user_email_is_not_available_then_it_return_error()
     {
-
-
         $response = $this->postJson(route('user.login'), ['email' => 'ahmedjubayer541@gmail.com', 'password' => 'password1'])->assertUnauthorized();
-
     }
 
     public function test_if_user_password_is_not_available_then_it_return_error()

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Events\TaskEvent;
+use App\Listeners\TaskEventListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -18,6 +20,14 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        TaskEvent::class =>
+            [
+                //we can add more listener for one task
+                TaskEventListener::class,
+
+            ],
+
+
     ];
 
     /**
