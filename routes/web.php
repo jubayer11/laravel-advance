@@ -4,6 +4,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\SeriviceController;
 use App\Jobs\sendEmailJob;
 use App\Mail\sendEmailMailable;
+use App\Models\User;
 use App\Services\Postcard;
 use App\Services\PostCardSendingService;
 use Illuminate\Support\Facades\Auth;
@@ -227,16 +228,15 @@ Route::get('softDelete/posts/index', [\App\Http\Controllers\PostController::clas
 
 //gate & and policy start
 
-Route::get('/subs', function (){
+Route::get('/subs', function () {
 
-    if (Gate::allows('mature-only',Auth::user()))
-    {
+    if (Gate::allows('mature-only', Auth::user())) {
         return view('subs');
     }
     return 'you are under age';
 });
 
-Route::get('customers', [\App\Http\Controllers\CustomerController::class,'index'])->name('customers.index');
+Route::get('customers', [\App\Http\Controllers\CustomerController::class, 'index'])->name('customers.index');
 Route::get('customers/create', 'CustomerController@create')->name('customers.create');
 Route::post('customers', 'CustomerController@store')->name('customers.store');
 Route::get('customers/{customer}', 'CustomerController@show')->name('customer.show')->middleware('can:view,customer');
@@ -248,20 +248,17 @@ Route::delete('customers/{customer}', 'CustomerController@destroy')->name('custo
 //gate & and policy end
 
 
-
 //localization start
 
-Route::get('/localization/{lang?}',[PostController::class,'localization']);
+Route::get('/localization/{lang?}', [PostController::class, 'localization']);
 
 
 //localization end
 
 
-
 //queue start
 
-Route::get('sendEmail',function ()
-{
+Route::get('sendEmail', function () {
 //    \Illuminate\Support\Facades\Mail::to('ahmedjubayer54@gmail.com')->send( new SendEmailMailable());
 
     //dispatch(new sendEmailJob());
@@ -277,8 +274,7 @@ Route::get('sendEmail',function ()
 
 //event start
 
-Route::get('event',function ()
-{
+Route::get('event', function () {
 
     event(new \App\Events\TaskEvent('hey everyone'));
 });
@@ -286,14 +282,12 @@ Route::get('event',function ()
 
 //event end
 //broadcast start
-Route::get('/listen',function ()
-{
+Route::get('/listen', function () {
     return view('listenBroadcast');
 }
 );
 
 //broadcast end
-
 
 
 Route::get('/about', function () {
@@ -363,4 +357,57 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//eloquent orm
 
+Route::get('/orm', function () {
+    //using with
+//    $user = User::with('todoLists')->first();
+//    return $user->toArray();
+    //The attributesToArray method may be used to convert a model's attributes to an array but not its relationships:
+//    $user = User::first();
+//    return $user->attributesToArray();
+//You may also convert entire collections of models to arrays by calling the toArray method on the collection instance:
+
+//    $users = User::all();
+//
+//    return $users->toArray();
+
+    //
+    //$user = User::find(1);
+
+    //return $user->toJson();
+
+    // return $user->toJson(JSON_PRETTY_PRINT);
+    //return (string) User::find(1);
+
+    //The diff method returns all of the models that are not present in the given collection:
+    //The except method returns all of the models that do not have the given primary keys
+    $users = User::all();
+//    $users = $users->diff(User::whereIn('id', [1, 2, 3])->get());
+    // $users = $users->except([1, 2, 3]);
+    //The fresh method retrieves a fresh instance of each model in the collection from the database. In addition, any specified relationships will be eager loaded:\
+
+    // $users = $users->fresh();
+    //$users = $users->fresh('todoLists');
+
+
+    //The intersect method returns all of the models that are also present in the given collection:
+    // $users = $users->intersect(User::whereIn('id', [1, 2, 3])->get());
+    //return $users->toArray();
+    //The load method eager loads the given relationships for all models in the collection:
+    //$users->load(['todoLists', 'Services']);
+
+    //$users->load('todoLists.tasks');
+
+
+    //The loadMissing method eager loads the given relationships for all models in the collection if the relationships are not already loaded
+    //$users->loadMissing(['comments', 'posts']);
+
+    //$users->loadMissing('comments.author');
+
+    //The modelKeys method returns the primary keys for all models in the collection:
+    $users->modelKeys();
+    return $users;
+
+
+});

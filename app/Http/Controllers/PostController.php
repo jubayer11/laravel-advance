@@ -23,7 +23,7 @@ class PostController extends Controller
 //                Sort::class,
 //            ])->thenReturn()->get();
 
-
+//
 //        if (request()->has('active')) {
 //            $posts->where('isActive', request('active'));
 //        }
