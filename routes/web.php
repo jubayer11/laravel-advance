@@ -178,6 +178,31 @@ use Illuminate\Support\Str;
 
 //start faceds example coder xample
 
+
+class container
+{
+    protected $bindings = [];
+
+    public function bind($name, callable $resolver)
+    {
+        $this->bindings[$name] = $resolver;
+    }
+
+    public function make($name)
+    {
+        return $this->bindings[$name]();
+    }
+
+
+}
+
+$container = new container();
+$container->bind('Game', function () {
+    return 'Football';
+});
+
+print_r($container->make('Game'));
+
 Route::get('/postcards', function () {
 
     $postCardService = new PostCardSendingService('us', 4, 6);
